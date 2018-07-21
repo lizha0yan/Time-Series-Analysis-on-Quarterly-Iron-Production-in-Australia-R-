@@ -19,7 +19,6 @@ fit <- lm(log.iron ~ time.iron + time.iron2 + factor(quarter))
 ```{r}
 summary(fit)
 ```
-# residual vs fitted plot is not good, mean is not zero and variance is not constant
 ```{r}
 plot(fit)
 ```
