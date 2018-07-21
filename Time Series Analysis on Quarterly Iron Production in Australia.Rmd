@@ -1,0 +1,48 @@
+```{r}
+iron.ts<- ts(head(basic_quarterly_iron_production$`Basic quarterly iron production in Australia: thousand tonnes. Mar 1956 ? Sep 1994`,-1), frequency=4, start=c(1956,1))
+```
+```{r}
+plot(iron.ts)
+```
+```{r}
+log.iron <- log(iron.ts)
+c <- rep(1:4,39)
+quarter<- head(c,-1)
+```
+```{r}
+  time.iron = time(log.iron)
+  time.iron2 = time(log.iron)^2
+```
+```{r}
+fit <- lm(log.iron ~ time.iron + time.iron2 + factor(quarter))
+```
+```{r}
+summary(fit)
+```
+# residual vs fitted plot is not good, mean is not zero and variance is not constant
+```{r}
+plot(fit)
+```
+```{r}
+acf(resid(fit),lag.max=100)
+```
+```{r}
+plot(diff(log.iron))
+```
+
+```{r}
+acf2(diff.iron, max.lag=36) 
+```
+
+```{r}
+library(astsa)
+diff.iron<- diff(log.iron)
+sarima(diff.iron,1,1,2,0,1,2,4) 
+```
+```{r}
+sarima.for(diff.iron,12,1,1,2,0,1,2,4)
+```
+```{r}
+plot(arima.sim(list(order=c(1,0,0), ar=.9), n=100), ylab="x", main=(expression(AR(1)~~~phi==+.9)))
+```
+
